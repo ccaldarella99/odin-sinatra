@@ -3,8 +3,8 @@ module Mastermind
   class Game
     attr_accessor :board, :player, :numberOfTries, :counter, :numTurns
     
-    def initialize
-      @numberOfTries = numTries
+    def initialize(n=0)
+      @numberOfTries = n < 4 ? numTries : n
       @board = Board.new
       @player = Player.new
       @counter = 0
@@ -34,16 +34,35 @@ module Mastermind
       true
     end
     
-    def nextTurn
+    def nextTurnCmd
       getTurn = nil
+      if(@numTurns == 0)
+        puts @board.show(@numberOfTries, @numTurns)
+      end
       while(getTurn == nil)
         puts "Enter 4 of the colors listed above." 
-        getTurn = getPegs
+        getTurn = getPegsCmd
       end
-      @board.show(@numberOfTries, @numTurns)
+      puts @board.show(@numberOfTries, @numTurns)
     end
 
-    def getPegs
+    def nextTurn(input)
+      if(input == "" || input == nil)
+        return @board.show(@numberOfTries, @numTurns)
+      end
+
+      status = ""
+      if(input.length !=4)
+        status = "Input must be only 4 characters long\n\n"
+      elsif(input.match?(/[ACDEFHIJKLMNQSUVXZ]+/i))
+        status = "Does not match the available colors of the  pegs\n\n"
+      else
+        @numTurns += 1 + @board.makeMove(input)
+      end
+      status += @board.show(@numberOfTries, @numTurns)
+    end
+
+    def getPegsCmd
       input = gets.chomp
       if(input.length !=4)
         puts "Input must be only 4 characters long"
@@ -59,6 +78,12 @@ module Mastermind
         @numTurns += 1 + @board.makeMove(input)
         return input
       end
+    end
+
+    def gameEnd
+      endOut = "\n   ***   Game Over   ***\n"
+      endOut += "\nYou #{@board.hasWon ? "Won!" : "Lost"}\n"
+      endOut += "The code was:   #{@board.code}\n"
     end
 
   end
@@ -81,18 +106,20 @@ module Mastermind
     end
     
     def show(num=nil, turns=nil)
+      showOutput = ""
       num ||=12
       turns ||=0
       pegsLeft = num - turns
       system "clear"
-      puts "Colors:"
-      puts "R, Y, G, B, O, W, P, T\n\n"
-      puts "*=-==-==-==-=*--------*"
-      pegsLeft.times { puts "| o  o  o  o |  ....  |" }
+      showOutput += "Colors:\n"
+      showOutput += "R, Y, G, B, O, W, P, T\n\n\n"
+      showOutput += "CHEAT: #{code}\n\n\n"
+      showOutput += "*=-==-==-==-=*--------*\n"
+      pegsLeft.times { showOutput += "| o  o  o  o |  ....  |\n" }
       @guesses.reverse.each do |out|
-        puts "| #{out[0]}  #{out[1]}  #{out[2]}  #{out[3]} |  #{out[4]}#{out[5]}#{out[6]}#{out[7]}  |" 
+        showOutput += "| #{out[0]}  #{out[1]}  #{out[2]}  #{out[3]} |  #{out[4]}#{out[5]}#{out[6]}#{out[7]}  |\n" 
       end
-      puts "*------------*--------*\n\n"
+      showOutput += "*------------*--------*\n\n\n"
     end
     
     def makeMove(move=nil)
@@ -134,7 +161,6 @@ module Mastermind
     
     def isWinner(m=nil)
       if(m.upcase == @code)
-        puts "You guessed correctly: #{m} == #{@code}"
         @hasWon = true
         return true
       end
@@ -150,19 +176,15 @@ module Mastermind
     
   end
   
-  system "clear"
-  game = Game.new
-  game.board.show(game.numberOfTries, 0)
-  
-  while(!game.over?)
-    game.nextTurn
-  end
-  
-  puts "\n   ***   Game Over   ***\n"
-  puts "\nYou #{game.board.hasWon ? "Won!" : "Lost"}"
-  puts "The code was:   #{game.board.code}"
-
+  #system "clear"
 end
+
+#mmGame = Mastermind
+#game = mmGame::Game.new
+#while(!game.over?)
+#  game.nextTurnCmd
+#end
+#puts game.gameEnd
 
 
 

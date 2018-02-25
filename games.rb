@@ -1,7 +1,7 @@
 require 'sinatra'
 load 'caesar-cipher.rb'
 load 'hangman.rb'
-#load 'Mastermind.rb'
+load 'Mastermind.rb'
 
 #CAESAR CIPHER
 @@c_words = "Write you message here!"
@@ -11,6 +11,12 @@ load 'hangman.rb'
 @@h_guess = ""
 hangmanGame = Hangman
 game = hangmanGame::Game.new
+
+#MASTERMIND
+m_maxTurns = 4
+mmGame = Mastermind
+m_game = mmGame::Game.new(m_maxTurns)
+@@m_tries = 0
 
 def getWords(w, s)
   @@c_words = w.to_s
@@ -37,8 +43,22 @@ get '/caesar_cipher.erb' do
 end
 
 get '/mastermind.erb' do
-  m_output  = "<h2>Coming Soon!</h2>"
-  erb :mastermind, :locals => { :m_output => m_output }
+  m_guess = params["m_guess"]
+  
+    m_output = m_game.nextTurn(m_guess).gsub("\n","<br>")
+#  if(m_game.numTurns > 0)
+#  else
+#    m_output = m_game.board.show(m_maxTurns, m_game.numTurns).gsub("\n","<br>")
+#  end
+  
+  if(m_game.over?)
+    m_status = m_game.gameEnd + "<p><a href=\'/mastermind.erb\'>New Game!</a></p>"
+    game = mmGame::Game.new(m_maxTurns)
+    @@m_tries = 0
+  end
+  @@m_tries = m_game.numTurns
+  
+  erb :mastermind, :locals => { :m_output => m_output, :m_guess => m_guess, :m_status => m_status }
 end
 
 get '/hangman.erb' do
