@@ -1,0 +1,47 @@
+---
+:wordLength: 8
+:player: !ruby/object:Hangman::Player
+  guessedLetters:
+  - r
+  - s
+  - t
+  - l
+  selectSave: false
+  selectLoad: false
+:board: !ruby/object:Hangman::Board
+  numLimbs: 3
+  limbs:
+  - O
+  - "/"
+  - "|"
+  - "/ "
+  - "\\"
+  - "\\"
+  - " "
+  limbOrder:
+  - 2
+  - 3
+  - 3
+  - 4
+  - 3
+  - 4
+  - 5
+  board:
+  - "          _____"
+  - "         |     |"
+  - "         |     O"
+  - "         |    /|"
+  - "         |    "
+  - "         |"
+  - "       -----"
+  isOver: false
+:wordArray:
+- _
+- _
+- L
+- L
+- _
+- _
+- _
+- S
+:word: WILLIAMS
