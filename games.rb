@@ -1,7 +1,7 @@
 require 'sinatra'
 load 'caesar-cipher.rb'
 load 'hangman.rb'
-load 'Mastermind.rb'
+load 'mastermind.rb'
 
 #CAESAR CIPHER
 @@c_words = "Write you message here!"
