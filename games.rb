@@ -13,7 +13,7 @@ hangmanGame = Hangman
 game = hangmanGame::Game.new
 
 #MASTERMIND
-m_maxTurns = 4
+m_maxTurns = 12
 mmGame = Mastermind
 m_game = mmGame::Game.new(m_maxTurns)
 @@m_tries = 0

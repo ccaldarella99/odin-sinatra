@@ -113,7 +113,7 @@ module Mastermind
       system "clear"
       showOutput += "Colors:\n"
       showOutput += "R, Y, G, B, O, W, P, T\n\n\n"
-      showOutput += "CHEAT: #{code}\n\n\n"
+      #showOutput += "CHEAT: #{code}\n\n\n"
       showOutput += "*=-==-==-==-=*--------*\n"
       pegsLeft.times { showOutput += "| o  o  o  o |  ....  |\n" }
       @guesses.reverse.each do |out|
