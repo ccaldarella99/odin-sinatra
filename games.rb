@@ -10,6 +10,7 @@ load 'hangman.rb'
 #HANGMAN
 @@h_guess = ""
 hangmanGame = Hangman
+game = hangmanGame::Game.new
 
 def getWords(w, s)
   @@c_words = w.to_s
@@ -41,19 +42,20 @@ get '/mastermind.erb' do
 end
 
 get '/hangman.erb' do
-#  h_output  = "<h2>Coming Soon!</h2>"
-#  h_output = hangmanGame.StartGame
   guessLetter = params["guessLetter"]
+  h_status = game.getPlayerInput(guessLetter)
   
-  game = hangmanGame::Game.new
-  if(!game.over?)
-    h_output  = game.display
-  else
-    h_output  = game.display
-    h_output += OutputWinner(game.guessCorrectly)
+  h_output  = game.display.gsub("\n","<br>")
+  if(game.over?)
+    if(game.guessCorrectly)
+      win = "<h1>YOU WIN!</h1>"
+    else
+      win = "<h1>GAME OVER!</h1>"
+    end
+    h_status = win + "<p><a href=\'/hangman.erb\'>New Game!</a></p>"
+    game = hangmanGame::Game.new
   end
   
-  
-  erb :hangman, :locals => { :h_output => h_output , :guessLetter => guessLetter }#, :game => hangmanGame}
+  erb :hangman, :locals => { :h_output => h_output , :guessLetter => @@h_guess, :h_superfluous => h_status }
 end
 

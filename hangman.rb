@@ -68,10 +68,26 @@ module Hangman
       outDisp += @player1.showGuessedLetters
       outDisp += @board.showBoardCmd
       outDisp += showSpaces
-      if(!over?)
-        #pIn = @player1.getPlayerInputCmd
-        #checkGuess(pIn)
-      end 
+      #if(!over?)
+      #  pIn = @player1.getPlayerInputCmd
+      #  checkGuess(pIn)
+      #end 
+      outDisp
+    end
+    
+    def getPlayerInput(letter)
+      _ret = ""
+      if(letter == "" || letter == nil)
+        return _ret
+      else
+        pIn = @player1.getPlayerInput(letter)
+        if(pIn == '0')
+          _ret = "Hmmm... It looks like you already guessed the letter \'#{letter.upcase}\'"
+        else
+          checkGuess(pIn)
+        end
+      end
+      _ret
     end
 
     def showSpaces 
@@ -146,6 +162,15 @@ module Hangman
 	    @guessedLetters.each { |x| outGuessed += " #{x.upcase}"}
       outGuessed += "\n"
     end
+    
+    def getPlayerInput(input)
+      if(input.length == 1 && @guessedLetters.include?(input))
+        input = '0'
+	    elsif(input.length == 1)
+        @guessedLetters << input
+      end
+	    input
+	  end
     
     def getPlayerInputCmd
 	    input = ""
@@ -241,16 +266,6 @@ module Hangman
     end
     game.displayCmd
     puts OutputWinner(game.guessCorrectly)
-  end
-  
-  def Hangman.StartGame
-    game = Game.new
-    while(!game.over?)
-#      SaveLoad(game)
-      game.display
-    end
-    game.display
-    OutputWinner(game.guessCorrectly)
   end
   
 end
