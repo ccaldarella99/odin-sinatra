@@ -110,7 +110,7 @@ module Mastermind
       num ||=12
       turns ||=0
       pegsLeft = num - turns
-      system "clear"
+      #system "clear"
       showOutput += "Colors:\n"
       showOutput += "R, Y, G, B, O, W, P, T\n\n\n"
       #showOutput += "CHEAT: #{code}\n\n\n"
