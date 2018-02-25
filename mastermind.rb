@@ -55,7 +55,7 @@ module Mastermind
       if(input.length !=4)
         status = "Input must be only 4 characters long\n\n"
       #elsif(input.match?(/[ACDEFHIJKLMNQSUVXZ]+/i))
-      elsif(/[ACDEFHIJKLMNQSUVXZ]+/i.match?(input))
+      elsif(/[ACDEFHIJKLMNQSUVXZ]+/i.match(input))
         status = "Does not match the available colors of the  pegs\n\n"
       else
         @numTurns += 1 + @board.makeMove(input)
