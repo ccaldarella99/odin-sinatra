@@ -44,19 +44,12 @@ end
 
 get '/mastermind.erb' do
   m_guess = params["m_guess"]
-  
-    m_output = m_game.nextTurn(m_guess).gsub("\n","<br>")
-#  if(m_game.numTurns > 0)
-#  else
-#    m_output = m_game.board.show(m_maxTurns, m_game.numTurns).gsub("\n","<br>")
-#  end
+  m_output = m_game.nextTurn(m_guess).gsub("\n","<br>")
   
   if(m_game.over?)
-    m_status = m_game.gameEnd + "<p><a href=\'/mastermind.erb\'>New Game!</a></p>"
-    game = mmGame::Game.new(m_maxTurns)
-    @@m_tries = 0
+    m_status = m_game.gameEnd.gsub("\n","<br>") + "<p><a href=\'/mastermind.erb\'>New Game!</a></p>"
+    m_game = mmGame::Game.new(m_maxTurns)
   end
-  @@m_tries = m_game.numTurns
   
   erb :mastermind, :locals => { :m_output => m_output, :m_guess => m_guess, :m_status => m_status }
 end
